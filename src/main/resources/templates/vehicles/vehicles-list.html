@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Список автомобилей</title>
+    <!-- Можно добавить стили для красоты, например, через Bootstrap или просто тег <style> -->
+    <style>
+        body { font-family: sans-serif; }
+        table { width: 80%; border-collapse: collapse; margin: 20px auto; }
+        th, td { border: 1px solid #dddddd; text-align: left; padding: 8px; }
+        thead { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+
+<h1 style="text-align: center;">Админка: Список автомобилей в базе</h1>
+
+<!-- Проверяем, не пустой ли список. Если пустой, выводим сообщение. -->
+<div th:if="${vehicles.isEmpty()}">
+    <p>В базе данных пока нет автомобилей.</p>
+</div>
+
+<!-- Если список НЕ пустой, то показываем таблицу. -->
+<table th:if="${!vehicles.isEmpty()}">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Номер</th>
+        <th>Код регистрации региона</th>
+        <th>Стоимость</th>
+        <th>Год выпуска</th>
+        <th>Пробег</th>
+        <th>Описание (на русском)</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!--
+        Ключевой момент: th:each="vehicle : ${vehicles}"
+        - ${vehicles} - это тот самый список, который мы положили в модель в контроллере.
+        - 'vehicle' - это временная переменная для одного элемента списка на каждой итерации.
+        - Thymeleaf повторит этот тег <tr> для каждого автомобиля в списке.
+    -->
+    <tr th:each="vehicle : ${vehicles}">
+        <!--
+            Используем th:text для безопасного вывода текста.
+            ${vehicle.id}, ${vehicle.price} - обращаемся к полям объекта 'vehicle'.
+        -->
+        <td th:text="${vehicle.id}">1</td>
+        <td th:text="${vehicle.numberRu}">А012AA</td>
+        <td th:text="${vehicle.regionRegistrationCode}">77</td>
+        <td th:text="${vehicle.priceRub}">10000.00</td>
+        <td th:text="${vehicle.manufactureYear}">2020</td>
+        <td th:text="${vehicle.mileageKm}">50000</td>
+        <td th:text="${vehicle.description}">Какой-то текст на русском</td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

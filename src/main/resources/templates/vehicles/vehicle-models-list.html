@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Список моделей автомобилей</title>
+    <style>
+        body { font-family: sans-serif; }
+        table { width: 90%; border-collapse: collapse; margin: 20px auto; }
+        th, td { border: 1px solid #dddddd; text-align: left; padding: 8px; }
+        thead { background-color: #f2f2f2; }
+        .empty-list { text-align: center; margin: 40px; }
+    </style>
+</head>
+<body>
+
+<h1 style="text-align: center;">Админка: Список моделей автомобилей</h1>
+
+<div th:if="${vehicleModels.isEmpty()}">
+    <p>В базе данных пока нет моделей автомобилей.</p>
+</div>
+
+<table th:if="${!vehicleModels.isEmpty()}">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Название модели</th>
+        <th>Тип ТС</th>
+        <th>Объем бака (л)</th>
+        <th>Грузоподъемность (кг)</th>
+        <th>Количество мест</th>
+        <th>Объем багажника (л)</th>
+        <th>Количество автомобилей</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="model : ${vehicleModels}">
+        <td th:text="${model.id}">1</td>
+        <td th:text="${model.name}">Model X</td>
+        <td th:text="${model.vehicleType}">CAR</td>
+        <td th:text="${model.fuelTankVolume}">60</td>
+        <td th:text="${model.loadCapacityKg}">500</td>
+        <td th:text="${model.seatsCount}">5</td>
+        <td th:text="${model.trunkVolumeL}">300</td>
+        <td th:text="${model.vehicles.size()}">5</td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

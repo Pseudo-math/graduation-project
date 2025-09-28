@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: graduation-project
+  datasource:
+    url: jdbc:postgresql://localhost:5432/graduation_project_db
+    username: postgres
+    password: aaadmin
+  jpa:
+    properties:
+      hibernate: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: none
+      show-sql: true
