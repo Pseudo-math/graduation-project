@@ -25,6 +25,7 @@
     <thead>
     <tr>
         <th>ID</th>
+        <th>Модель</th>
         <th>Номер</th>
         <th>Код регистрации региона</th>
         <th>Стоимость</th>
@@ -46,6 +47,7 @@
             ${vehicle.id}, ${vehicle.price} - обращаемся к полям объекта 'vehicle'.
         -->
         <td th:text="${vehicle.id}">1</td>
+        <td th:text="${vehicle.model.name}">лада 7</td>
         <td th:text="${vehicle.numberRu}">А012AA</td>
         <td th:text="${vehicle.regionRegistrationCode}">77</td>
         <td th:text="${vehicle.priceRub}">10000.00</td>
