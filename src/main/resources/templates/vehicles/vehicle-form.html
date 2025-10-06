@@ -10,8 +10,8 @@
 
 <body>
 <h1 style="text-align: center;">
-    <span th:if="${vehicle.id == null}">Добавить нового пользователя</span>
-    <span th:unless="${vehicle.id == null}">Редактировать старого пользователя</span>
+    <span th:if="${vehicle.id == null}">Добавить новый автомобиль</span>
+    <span th:unless="${vehicle.id == null}">Редактировать старый автомобиль</span>
 </h1>
 
 <form action="#" th:action="@{/vehicles}" th:object="${vehicle}" method="post">

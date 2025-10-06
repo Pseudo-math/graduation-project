@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Форма для добавления модели автомобиля</title>
+    <style>
+        .form-container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+
+<body>
+<div class="form-container">
+    <h1 style="text-align: center;">
+        <span th:if="${vehicleModel.id == null}">Добавить новую модель автомобиля</span>
+        <span th:unless="${vehicleModel.id == null}">Редактировать модель автомобиля</span>
+    </h1>
+
+    <form action="#" th:action="@{/vehicle-models}" th:object="${vehicleModel}" method="post">
+
+        <input type="hidden" th:field="*{id}" />
+
+        <div class="form-group">
+            <label for="name">Название модели:</label>
+            <input type="text" id="name" th:field="*{name}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="vehicleType">Тип транспортного средства:</label>
+            <select id="vehicleType" th:field="*{vehicleType}" required>
+                <option value="">-- Выберите тип --</option>
+                <option th:each="type : ${T(ru.aidar.graduation_project.model.VehicleType).values()}"
+                        th:value="${type}"
+                        th:text="${type.name()}">
+                </option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="fuelTankVolume">Объем топливного бака (л):</label>
+            <input type="number" id="fuelTankVolume" th:field="*{fuelTankVolume}"
+                   min="1" step="1" required>
+        </div>
+
+        <div class="form-group">
+            <label for="loadCapacityKg">Грузоподъемность (кг):</label>
+            <input type="number" id="loadCapacityKg" th:field="*{loadCapacityKg}"
+                   min="1" step="1" required>
+        </div>
+
+        <div class="form-group">
+            <label for="seatsCount">Количество мест:</label>
+            <input type="number" id="seatsCount" th:field="*{seatsCount}"
+                   min="1" step="1" required>
+        </div>
+
+        <div class="form-group">
+            <label for="trunkVolumeL">Объем багажника (л):</label>
+            <input type="number" id="trunkVolumeL" th:field="*{trunkVolumeL}"
+                   min="0" step="1" required>
+        </div>
+
+        <br>
+
+        <button type="submit">Сохранить</button>
+
+    </form>
+</div>
+
+</body>
+</html>
