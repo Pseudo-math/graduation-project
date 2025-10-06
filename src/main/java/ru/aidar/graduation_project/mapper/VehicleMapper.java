@@ -8,7 +8,7 @@ import ru.aidar.graduation_project.model.Vehicle;
 
 @Mapper(
         uses = {ReferenceMapper.class},
-        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_NULL,
         componentModel = MappingConstants.ComponentModel.SPRING,
         unmappedTargetPolicy = ReportingPolicy.IGNORE
 )
