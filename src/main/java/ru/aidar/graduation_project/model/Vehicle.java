@@ -19,7 +19,6 @@ public class Vehicle {
     @Column(name = "id")
     private Long id;
 
-    @NotNull
     @ManyToOne
     @JoinColumn(name = "model_id")
     private VehicleModel model;

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Форма для добавления автомобиля</title>
+    <style>
+
+    </style>
+</head>
+
+<body>
+<h1 style="text-align: center;">
+    <span th:if="${vehicle.id == null}">Добавить нового пользователя</span>
+    <span th:unless="${vehicle.id == null}">Редактировать старого пользователя</span>
+</h1>
+
+<form action="#" th:action="@{/vehicles}" th:object="${vehicle}" method="post">
+
+    <input type="hidden" th:field="*{id}" />
+
+    <div>
+        <label for="model">Модель:</label>
+        <select id="model" th:field="*{model}">
+            <option value="">-- Отсутствует / Не выбрано --</option>
+            <option th:each="modelItem : ${vehicleModels}"
+                    th:value="${modelItem.id}"
+                    th:text="${modelItem.name}"
+            >
+                Модель
+            </option>
+        </select>
+    </div>
+    <div>
+        <label for="numberRu">Номер:</label>
+        <input type="text" id="numberRu" th:field="*{numberRu}">
+    </div>
+    <div>
+        <label for="regionRegistrationCode">Код региона:</label>
+        <input type="number" id="regionRegistrationCode" th:field="*{regionRegistrationCode}">
+    </div>
+    <div>
+        <label for="manufactureYear">Год выпуска:</label>
+        <input type="number" id="manufactureYear" th:field="*{manufactureYear}" required>
+    </div>
+    <div>
+        <label for="mileageKm">Пробег:</label>
+        <input type="number" id="mileageKm" th:field="*{mileageKm}" required>
+    </div>
+    <div>
+        <label for="priceRub">Цена:</label>
+        <input type="number" id="priceRub" th:field="*{priceRub}" required>
+    </div>
+    <div>
+        <label for="description">Описание:</label>
+        <textarea id="description" th:field="*{description}"></textarea>
+    </div>
+
+    <br>
+
+    <button type="submit">Сохранить</button>
+
+</form>
+
+</body>
+</html>
