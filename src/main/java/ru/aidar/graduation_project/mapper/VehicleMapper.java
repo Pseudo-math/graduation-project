@@ -16,6 +16,7 @@ public abstract class VehicleMapper {
     @Mapping(target = "model", source = "modelId")
     public abstract Vehicle map(VehicleCreate dto);
 
+    @Mapping(target = "modelId", source = "model.id")
     @Mapping(target = "modelName", source = "model.name")
     public abstract VehicleResponse map(Vehicle entity);
 
