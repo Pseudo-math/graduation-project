@@ -37,6 +37,15 @@ public class VehicleRestController {
                 .toList();
     }
 
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public VehicleResponse index(@PathVariable Long id) {
+        Vehicle vehicle = vehicleRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Vehicle with id " + id + " not found"));
+
+        return mapper.map(vehicle);
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public VehicleResponse create(@Valid @RequestBody VehicleCreate vehicleCreate) {

@@ -16,7 +16,7 @@ import ru.aidar.graduation_project.repository.VehicleModelRepository;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/vehicle-models")
+@RequestMapping("/api/v1/brands")
 @AllArgsConstructor
 public class VehicleModelRestController {
     private final VehicleModelRepository vehicleModelRepository;
