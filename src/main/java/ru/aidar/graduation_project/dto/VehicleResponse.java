@@ -11,7 +11,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class VehicleResponse {
     private Long id;
-    private String modelName;
     private Long modelId;
     private String numberRu;
     private int regionRegistrationCode;
