@@ -15,7 +15,6 @@ import ru.aidar.graduation_project.model.VehicleModel;
 public abstract class VehicleModelMapper {
     public abstract VehicleModel map(VehicleModelCreate dto);
 
-    @Mapping(target = "vehiclesCount", expression = "java(entity.getVehicles() != null ? entity.getVehicles().size() : 0)")
     public abstract VehicleModelResponse map(VehicleModel entity);
 
     public abstract void update(VehicleModelUpdate dto, @MappingTarget VehicleModel entity);

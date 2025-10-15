@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.aidar.graduation_project.model.Driver;
+import ru.aidar.graduation_project.model.Vehicle;
 
 import java.util.List;
 
@@ -11,15 +13,10 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class VehicleResponse {
+public class EnterpriseResponse {
     private Long id;
-    private Long modelId;
-    private Long enterpriseId;
+    private String name;
+    private List<Long> vehicleIds;
     private List<Long> driverIds;
-    private String numberRu;
-    private int regionRegistrationCode;
-    private int manufactureYear;
-    private int mileageKm;
-    private int priceRub;
-    private String description;
+    private String city;
 }

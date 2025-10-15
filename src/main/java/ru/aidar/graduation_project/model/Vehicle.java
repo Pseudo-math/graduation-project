@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Table(name = "vehicles")
 @NoArgsConstructor
@@ -22,6 +24,13 @@ public class Vehicle implements BaseEntity {
     @ManyToOne
     @JoinColumn(name = "model_id")
     private VehicleModel model;
+
+    @ManyToOne
+    @JoinColumn(name = "enterprise_id")
+    private Enterprise enterprise;
+
+    @ManyToMany(mappedBy = "vehicles")
+    private List<Driver> drivers;
 
     @Column(name = "number_ru")
     private String numberRu;
