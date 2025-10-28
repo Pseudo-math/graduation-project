@@ -8,7 +8,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "enterprises")
@@ -24,6 +26,14 @@ public class Enterprise implements BaseEntity {
     @NotBlank
     @Column(name = "name")
     private String name;
+
+    @ManyToMany
+    @JoinTable(
+            name = "enterprise_manager",
+            joinColumns = @JoinColumn(name = "enterprise_id"),
+            inverseJoinColumns = @JoinColumn(name = "manager_id")
+    )
+    private Set<Manager> managers = new HashSet<>();
 
     @OneToMany(mappedBy = "enterprise")
     private List<Vehicle> vehicles = new ArrayList<>();

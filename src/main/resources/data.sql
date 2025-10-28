@@ -142,3 +142,56 @@ UPDATE drivers SET status = 'INACTIVE' WHERE current_vehicle_id IS NULL;
 
 -- 6. Добавляем несколько автомобилей без водителей (как требуется в задании)
 UPDATE vehicles SET enterprise_id = 1 WHERE id IN (24, 25); -- Добавляем еще пару машин без водителей
+-- Запусти это ПОСЛЕ вставки enterprises (id 1,2,3 должны существовать),
+-- либо сделай внешний ключ DEFERRABLE (ниже уже так и задано).
+
+BEGIN;
+
+-- 1) Таблица managers (если вдруг ещё нет)
+CREATE TABLE IF NOT EXISTS managers (
+    id               BIGSERIAL PRIMARY KEY,
+    username         VARCHAR(100)  NOT NULL UNIQUE,
+    password_digest  VARCHAR(255)  NOT NULL,
+    name             VARCHAR(100)  NOT NULL,
+    surname          VARCHAR(100)  NOT NULL,
+    patronymic       VARCHAR(100)
+);
+
+-- 2) Join-таблица enterprise_manager (M:N)
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM information_schema.tables
+        WHERE table_name = 'enterprise_manager'
+    ) THEN
+        CREATE TABLE enterprise_manager (
+            enterprise_id BIGINT NOT NULL,
+            manager_id    BIGINT NOT NULL,
+            CONSTRAINT pk_enterprise_manager PRIMARY KEY (enterprise_id, manager_id),
+            CONSTRAINT fk_em_enterprise FOREIGN KEY (enterprise_id)
+                REFERENCES enterprises(id) DEFERRABLE INITIALLY DEFERRED,
+            CONSTRAINT fk_em_manager FOREIGN KEY (manager_id)
+                REFERENCES managers(id) DEFERRABLE INITIALLY DEFERRED
+        );
+        CREATE INDEX idx_em_enterprise ON enterprise_manager(enterprise_id);
+        CREATE INDEX idx_em_manager    ON enterprise_manager(manager_id);
+    END IF;
+END $$;
+
+-- 3) Менеджеры (пароль "password" — примерный BCrypt, подставь свой при необходимости)
+INSERT INTO managers (username, password_digest, name, surname, patronymic)
+VALUES
+('managerA', '$2a$12$Lti2.hvnMoObdieHOvR/ceDeZUD8c6dKM2oMIjJP0nMSxjtslzVjq', 'Иван', 'Иванов', NULL),
+('managerB', '$2a$12$2mIwOz0tElxuZy2wld/Egufbtdo/9n75UgxteCnD97s7OSSmnjqFm', 'Пётр', 'Петров', NULL)
+ON CONFLICT (username) DO NOTHING;
+
+-- 4) Видимость (managerA → 1,2; managerB → 2,3)
+-- Предполагается, что enterprises с id 1,2,3 уже есть.
+INSERT INTO enterprise_manager (enterprise_id, manager_id) VALUES
+(1, (SELECT id FROM managers WHERE username = 'managerA')),
+(2, (SELECT id FROM managers WHERE username = 'managerA')),
+(2, (SELECT id FROM managers WHERE username = 'managerB')),
+(3, (SELECT id FROM managers WHERE username = 'managerB'))
+ON CONFLICT DO NOTHING;
+
+COMMIT;

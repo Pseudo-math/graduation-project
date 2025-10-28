@@ -12,6 +12,7 @@ import ru.aidar.graduation_project.mapper.VehicleMapper;
 import ru.aidar.graduation_project.model.Vehicle;
 import ru.aidar.graduation_project.repository.VehicleModelRepository;
 import ru.aidar.graduation_project.repository.VehicleRepository;
+import ru.aidar.graduation_project.service.VisibilityService;
 
 import java.util.List;
 
@@ -21,29 +22,41 @@ public class VehicleRestController {
     private VehicleRepository vehicleRepository;
     private VehicleModelRepository modelRepository;
     private VehicleMapper mapper;
+    private VisibilityService visibilityService;
 
-    public VehicleRestController(VehicleRepository vehicleRepository, VehicleModelRepository modelRepository, VehicleMapper mapper) {
+    public VehicleRestController(VehicleRepository vehicleRepository,
+                                 VehicleModelRepository modelRepository,
+                                 VehicleMapper mapper,
+                                 VisibilityService visibilityService) {
         this.vehicleRepository = vehicleRepository;
         this.modelRepository = modelRepository;
         this.mapper = mapper;
+        this.visibilityService = visibilityService;
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<VehicleResponse> show() {
-        List<Vehicle> allVehicles = vehicleRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
-        return allVehicles.stream()
-                .map(mapper::map)
-                .toList();
+        if (!visibilityService.isManager()) {
+            return vehicleRepository.findAll(Sort.by(Sort.Direction.ASC, "id"))
+                    .stream().map(mapper::map).toList();
+        }
+        var ids = visibilityService.visibleEnterpriseIds();
+        if (ids.isEmpty()) return List.of();
+        return vehicleRepository.findByEnterpriseIdIn(ids).stream().map(mapper::map).toList();
     }
+
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public VehicleResponse index(@PathVariable Long id) {
-        Vehicle vehicle = vehicleRepository.findById(id)
+        var v = vehicleRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Vehicle with id " + id + " not found"));
 
-        return mapper.map(vehicle);
+        if (visibilityService.isManager()) {
+            visibilityService.assertVisible(v.getEnterprise().getId());
+        }
+        return mapper.map(v);
     }
 
     @PostMapping
