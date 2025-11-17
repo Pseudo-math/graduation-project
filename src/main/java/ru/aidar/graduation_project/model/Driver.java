@@ -12,6 +12,7 @@ import org.hibernate.annotations.JdbcType;
 import org.hibernate.dialect.PostgreSQLEnumJdbcType;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "drivers")
@@ -45,7 +46,7 @@ public class Driver implements BaseEntity {
             joinColumns = @JoinColumn(name = "driver_id"),
             inverseJoinColumns = @JoinColumn(name = "vehicle_id")
     )
-    private List<Vehicle> vehicles;
+    private Set<Vehicle> vehicles;
 
     @Nullable
     @OneToOne(cascade = CascadeType.ALL)

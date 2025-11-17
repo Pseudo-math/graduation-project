@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "vehicles")
@@ -30,7 +31,7 @@ public class Vehicle implements BaseEntity {
     private Enterprise enterprise;
 
     @ManyToMany(mappedBy = "vehicles")
-    private List<Driver> drivers;
+    private Set<Driver> drivers;
 
     @Column(name = "number_ru")
     private String numberRu;

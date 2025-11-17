@@ -7,10 +7,10 @@ import org.springframework.stereotype.Service;
 import ru.aidar.graduation_project.repository.ManagerRepository;
 
 @Service
-public class ManagerDetailsService implements UserDetailsService {
+public class CustomUserDetailsService implements UserDetailsService {
     private ManagerRepository managerRepository;
 
-    public ManagerDetailsService(ManagerRepository managerRepository) {
+    public CustomUserDetailsService(ManagerRepository managerRepository) {
         this.managerRepository = managerRepository;
     }
 

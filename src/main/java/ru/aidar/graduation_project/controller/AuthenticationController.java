@@ -8,9 +8,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import ru.aidar.graduation_project.dto.AuthManagerRequest;
-import ru.aidar.graduation_project.repository.ManagerRepository;
 import ru.aidar.graduation_project.security.JwtUtils;
-import ru.aidar.graduation_project.security.ManagerDetailsService;
+import ru.aidar.graduation_project.security.CustomUserDetailsService;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -18,7 +17,7 @@ import ru.aidar.graduation_project.security.ManagerDetailsService;
 public class AuthenticationController {
     private final AuthenticationManager authenticationManager;
     private final JwtUtils jwtUtils;
-    private final ManagerDetailsService managerDetailsService;
+    private final CustomUserDetailsService customUserDetailsService;
 
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
@@ -27,7 +26,7 @@ public class AuthenticationController {
                 new UsernamePasswordAuthenticationToken(auth.username(), auth.password())
         );
 
-        final UserDetails userDetails = managerDetailsService.loadUserByUsername(auth.username());
+        final UserDetails userDetails = customUserDetailsService.loadUserByUsername(auth.username());
 
         return jwtUtils.generateManagerToken(auth.username());
     }

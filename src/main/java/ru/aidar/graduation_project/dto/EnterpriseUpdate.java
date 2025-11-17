@@ -1,25 +1,25 @@
 package ru.aidar.graduation_project.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.aidar.graduation_project.model.Driver;
-import ru.aidar.graduation_project.model.Manager;
-import ru.aidar.graduation_project.model.Vehicle;
 
+import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class EnterpriseResponse {
-    private Long id;
+public class EnterpriseUpdate {
+    @NotBlank
     private String name;
-    private List<Long> vehicleIds;
+
     private List<Long> managerIds;
-    private List<Long> driverIds;
+
+    @NotNull
     private String city;
 }

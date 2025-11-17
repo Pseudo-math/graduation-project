@@ -1,12 +1,14 @@
 package ru.aidar.graduation_project.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 import ru.aidar.graduation_project.model.Driver;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public interface DriverRepository extends JpaRepository<Driver, Long> {
     List<Driver> findAllByEnterpriseId(Long id);
     List<Driver> findByEnterpriseIdIn(Collection<Long> enterpriseIds);
