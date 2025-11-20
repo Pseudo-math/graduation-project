@@ -56,8 +56,9 @@ public class EnterpriseRestController {
                 .orElseThrow(() -> new ResourceNotFoundException("Enterprise with id " + id + " not found"));
 
         if (visibilityService.isManager()) {
-            visibilityService.assertVisible(enterprise.getId());
+            visibilityService.assertVisible(id);
         }
+
         return mapper.map(enterprise);
     }
 
@@ -65,7 +66,7 @@ public class EnterpriseRestController {
     @ResponseStatus(HttpStatus.CREATED)
     public EnterpriseResponse create(@Valid @RequestBody EnterpriseCreate enterpriseCreate) {
         Enterprise enterprise = mapper.map(enterpriseCreate);
-
+        //TODO: Manager может создать только Enterprise выдимый для него, сейчас может создать любой.
         enterpriseRepository.save(enterprise);
 
         return mapper.map(enterprise);
@@ -78,6 +79,10 @@ public class EnterpriseRestController {
                 .orElseThrow(() -> new ResourceNotFoundException("Enterprise with id " + id + " not found"));
         mapper.update(data, enterprise);
 
+        if (visibilityService.isManager()) {
+            visibilityService.assertVisible(id);
+        }
+
         enterpriseRepository.save(enterprise);
 
         return mapper.map(enterprise);
@@ -88,6 +93,10 @@ public class EnterpriseRestController {
     public void delete(@PathVariable Long id) {
         if (!enterpriseRepository.existsById(id)) {
             throw new ResourceNotFoundException("Enterprise with id " + id + " not found");
+        }
+
+        if (visibilityService.isManager()) {
+            visibilityService.assertVisible(id);
         }
 
         enterpriseRepository.deleteById(id);

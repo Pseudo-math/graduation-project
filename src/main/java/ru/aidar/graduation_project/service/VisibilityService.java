@@ -5,7 +5,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import ru.aidar.graduation_project.model.Enterprise;
-import ru.aidar.graduation_project.model.Manager;
+import ru.aidar.graduation_project.model.ManagerProfile;
+import ru.aidar.graduation_project.model.User;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -22,8 +23,9 @@ public class VisibilityService {
     /** Для менеджера вернёт набор видимых enterpriseId; для не-менеджера — пустой Set (нет ограничений) */
     public Set<Long> visibleEnterpriseIds() {
         var auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null || !(auth.getPrincipal() instanceof Manager m)) return Set.of();
-        return m.getVisibleEnterprises().stream().map(Enterprise::getId).collect(Collectors.toUnmodifiableSet());
+        if (auth == null || !(auth.getPrincipal() instanceof User user) || !isManager()) return Set.of();
+        ManagerProfile manager = user.getManagerProfile();
+        return manager.getVisibleEnterprises().stream().map(Enterprise::getId).collect(Collectors.toUnmodifiableSet());
     }
 
     /** Бросаем 403, если менеджер и enterprise не входит в видимость */

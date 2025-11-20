@@ -27,13 +27,8 @@ public class Enterprise implements BaseEntity {
     @Column(name = "name")
     private String name;
 
-    @ManyToMany
-    @JoinTable(
-            name = "enterprise_manager",
-            joinColumns = @JoinColumn(name = "enterprise_id"),
-            inverseJoinColumns = @JoinColumn(name = "manager_id")
-    )
-    private Set<Manager> managers = new HashSet<>();
+    @ManyToMany(mappedBy = "visibleEnterprises")
+    private Set<ManagerProfile> managerProfiles = new HashSet<>();
 
     @OneToMany(mappedBy = "enterprise")
     private List<Vehicle> vehicles = new ArrayList<>();

@@ -18,7 +18,7 @@ public class EnterpriseUpdate {
     @NotBlank
     private String name;
 
-    private List<Long> managerIds;
+    private List<Long> managerProfileIds;
 
     @NotNull
     private String city;

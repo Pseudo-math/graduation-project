@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: pgadmin_dump
+      changes:
+        - sqlFile:
+            path: sql/v-1.0-initial-schema.sql
+            relativeToChangelogFile: true

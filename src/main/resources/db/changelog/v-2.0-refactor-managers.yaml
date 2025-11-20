@@ -1,0 +1,41 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2-create-new-tables
+      author: aidar
+      changes:
+        - sqlFile:
+            path: sql/v-2.0-create-new-tables.sql
+            relativeToChangelogFile: true
+
+  - changeSet:
+      id: 3-migrate-data
+      author: aidar
+      changes:
+        - sqlFile:
+            path: sql/v-2.1-migrate-data.sql
+            relativeToChangelogFile: true
+
+  - changeSet:
+      id: 4-drop-old-tables
+      author: aidar
+      changes:
+        - sqlFile:
+            path: sql/v-2.2-drop-old-tables.sql
+            relativeToChangelogFile: true
+
+  - changeSet:
+      id: 5-add-user-role.sql
+      author: aidar
+      changes:
+        - sqlFile:
+            path: sql/v-2.3-add-user-role.sql
+            relativeToChangelogFile: true
+
+  - changeSet:
+      id: 6-update-simple-user-password # Новый, уникальный ID
+      author: aidar
+      changes:
+        - sqlFile:
+            path: sql/v-2.4-update-simple-user-password.sql # Ссылка на новый SQL-файл
+            relativeToChangelogFile: true
+

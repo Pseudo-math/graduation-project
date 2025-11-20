@@ -50,19 +50,23 @@ public class VehicleRestController {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public VehicleResponse index(@PathVariable Long id) {
-        var v = vehicleRepository.findById(id)
+        Vehicle vehicle = vehicleRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Vehicle with id " + id + " not found"));
 
         if (visibilityService.isManager()) {
-            visibilityService.assertVisible(v.getEnterprise().getId());
+            visibilityService.assertVisible(vehicle.getEnterprise().getId());
         }
-        return mapper.map(v);
+        return mapper.map(vehicle);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public VehicleResponse create(@Valid @RequestBody VehicleCreate vehicleCreate) {
         Vehicle vehicle = mapper.map(vehicleCreate);
+
+        if (visibilityService.isManager()) {
+            visibilityService.assertVisible(vehicle.getEnterprise().getId());
+        }
 
         vehicleRepository.save(vehicle);
 
@@ -76,6 +80,10 @@ public class VehicleRestController {
                         .orElseThrow(() -> new ResourceNotFoundException("Vehicle with id " + id + " not found"));
         mapper.update(data, vehicle);
 
+        if (visibilityService.isManager()) {
+            visibilityService.assertVisible(vehicle.getEnterprise().getId());
+        }
+
         vehicleRepository.save(vehicle);
 
         return mapper.map(vehicle);
@@ -84,8 +92,11 @@ public class VehicleRestController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {
-        if (!vehicleRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Vehicle with id " + id + " not found");
+        Vehicle vehicle = vehicleRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Vehicle with id " + id + " not found"));
+
+        if (visibilityService.isManager()) {
+            visibilityService.assertVisible(vehicle.getEnterprise().getId());
         }
 
         vehicleRepository.deleteById(id);

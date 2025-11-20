@@ -4,12 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.aidar.graduation_project.model.Driver;
-import ru.aidar.graduation_project.model.Manager;
-import ru.aidar.graduation_project.model.Vehicle;
 
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -19,7 +15,7 @@ public class EnterpriseResponse {
     private Long id;
     private String name;
     private List<Long> vehicleIds;
-    private List<Long> managerIds;
+    private List<Long> managerProfileIds;
     private List<Long> driverIds;
     private String city;
 }

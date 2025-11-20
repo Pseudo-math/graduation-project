@@ -30,9 +30,8 @@ public class JwtUtils {
                 .compact();
     }
 
-    public String generateManagerToken(String username) {
+    public String generateToken(String username) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("ROLE", "MANAGER");
         return createToken(claims, username);
     }
     public String getUsernameFromToken(String token) {

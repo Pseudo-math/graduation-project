@@ -2,7 +2,9 @@ package ru.aidar.graduation_project.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,14 +22,18 @@ public class AuthenticationController {
     private final CustomUserDetailsService customUserDetailsService;
 
     @PostMapping("/login")
-    @ResponseStatus(HttpStatus.OK)
-    public String login(@RequestBody AuthManagerRequest auth) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(auth.username(), auth.password())
-        );
+    public ResponseEntity<String> login(@RequestBody AuthManagerRequest auth) {
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(auth.username(), auth.password())
+            );
 
-        final UserDetails userDetails = customUserDetailsService.loadUserByUsername(auth.username());
+            final UserDetails userDetails = customUserDetailsService.loadUserByUsername(auth.username());
 
-        return jwtUtils.generateManagerToken(auth.username());
+            return ResponseEntity.ok(jwtUtils.generateToken(auth.username()));
+        }
+        catch (BadCredentialsException e) {
+            return  ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        }
     }
 }

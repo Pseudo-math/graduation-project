@@ -4,23 +4,25 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import ru.aidar.graduation_project.repository.ManagerRepository;
+import org.springframework.transaction.annotation.Transactional;
+import ru.aidar.graduation_project.repository.UserRepository;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
-    private ManagerRepository managerRepository;
+    private final UserRepository userRepository;
 
-    public CustomUserDetailsService(ManagerRepository managerRepository) {
-        this.managerRepository = managerRepository;
+    public CustomUserDetailsService(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         if (username == null || username.trim().isEmpty()) {
             throw new UsernameNotFoundException("Username is empty");
         }
 
-        return managerRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Manager with name " + username + " not found."));
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User with name " + username + " not found."));
     }
 }
